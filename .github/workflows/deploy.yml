@@ -22,14 +22,13 @@ jobs:
       - name: Remove old container if exists
         run: |
           BRANCH_NAME=$(echo "${GITHUB_REF_NAME}" | tr '/' '-')
-          docker rm -f $BRANCH_NAME || true
+          if [ "$(docker ps -aq -f name=$BRANCH_NAME)" ]; then
+            docker rm -f "$BRANCH_NAME"
+          fi
 
       - name: Run container
         run: |
           BRANCH_NAME=$(echo "${GITHUB_REF_NAME}" | tr '/' '-')
-          if [ "$(docker ps -aq -f name=$BRANCH_NAME)" ]; then
-            docker rm -f "$BRANCH_NAME"
-          fi
           docker run -d \
             --name "$BRANCH_NAME" \
             --label "traefik.enable=true" \
