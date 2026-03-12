@@ -17,7 +17,7 @@ jobs:
         run: |
           BRANCH_NAME=$(echo "${GITHUB_REF_NAME}" | tr '/' '-')
           echo "Building Docker image for branch $BRANCH_NAME"
-          docker build -t springboot-bonjour:$BRANCH_NAME .
+          docker build -t test:$BRANCH_NAME .
 
       - name: Remove old container if exists
         run: |

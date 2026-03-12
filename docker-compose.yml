@@ -15,7 +15,7 @@ services:
 
   # exemple conteneur pour branche test (GitHub Actions va créer d’autres conteneurs)
   springboot-test:
-    image: springboot-bonjour:latest
+    image: test:latest
     container_name: test
     labels:
       - "traefik.enable=true"
