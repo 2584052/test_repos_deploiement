@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  traefik:
+    image: traefik:v3
+    container_name: traefik
+    command:
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  # exemple conteneur pour branche test (GitHub Actions va créer d’autres conteneurs)
+  springboot-test:
+    image: springboot-bonjour:latest
+    container_name: test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.test.rule=Host(`test.dev.monapp.com`)"
+      - "traefik.http.routers.test.entrypoints=web"
+    restart: always
