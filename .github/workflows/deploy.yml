@@ -33,7 +33,7 @@ jobs:
             --label "traefik.enable=true" \
             --label "traefik.http.routers.$BRANCH_NAME.rule=Host(\"$BRANCH_NAME.dev.monapp.com\")" \
             --label "traefik.http.routers.$BRANCH_NAME.entrypoints=web" \
-            springboot-bonjour:"$BRANCH_NAME"
+            test:"$BRANCH_NAME"
 
       - name: List running containers
         run: docker ps
