@@ -27,12 +27,13 @@ jobs:
       - name: Run container
         run: |
           BRANCH_NAME=$(echo "${GITHUB_REF_NAME}" | tr '/' '-')
+          docker rm -f "$BRANCH_NAME" || true
           docker run -d \
-            --name $BRANCH_NAME \
+            --name "$BRANCH_NAME" \
             --label "traefik.enable=true" \
-            --label "traefik.http.routers.$BRANCH_NAME.rule=Host(`$BRANCH_NAME.dev.monapp.com`)" \
+            --label "traefik.http.routers.$BRANCH_NAME.rule=Host(\"$BRANCH_NAME.dev.monapp.com\")" \
             --label "traefik.http.routers.$BRANCH_NAME.entrypoints=web" \
-            springboot-bonjour:$BRANCH_NAME
+            springboot-bonjour:"$BRANCH_NAME"
 
       - name: List running containers
         run: docker ps
