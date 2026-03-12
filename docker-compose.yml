@@ -14,7 +14,7 @@ services:
     restart: always
 
   # exemple conteneur pour branche test (GitHub Actions va créer d’autres conteneurs)
-  springboot-test:
+  test:
     image: test:latest
     container_name: test
     labels:
