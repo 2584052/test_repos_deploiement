@@ -1,0 +1,44 @@
+name: Deploy preview environment
+
+# Déclenchement : à chaque push sur une branche feature/*
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+
+  deploy:
+    # runner auto-hébergé ou serveur Docker
+    runs-on: self-hosted
+
+    steps:
+
+      # 1️⃣ Récupérer le code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Build l’image Docker à partir du Dockerfile
+      - name: Build Docker image
+        run: |
+          echo "Building Docker image for branch ${{ github.ref_name }}"
+          docker build -t demo:${{ github.ref_name }} .
+
+      # 3️⃣ Supprimer un ancien conteneur de la même branche (si existant)
+      - name: Remove old container if exists
+        run: |
+          docker rm -f ${{ github.ref_name }} || true
+
+      # 4️⃣ Lancer le conteneur avec labels Traefik pour le routage
+      - name: Run container
+        run: |
+          docker run -d \
+            --name ${{ github.ref_name }} \
+            --label "traefik.enable=true" \
+            --label "traefik.http.routers.${{ github.ref_name }}.rule=Host(`${{ github.ref_name }}.dev.monapp.com`)" \
+            --label "traefik.http.routers.${{ github.ref_name }}.entrypoints=web" \
+            demo:${{ github.ref_name }}
+
+      # 5️⃣ Optionnel : afficher les conteneurs en cours
+      - name: List running containers
+        run: docker ps
