@@ -2,7 +2,9 @@ name: Manual Workflow
 
 on:
   workflow_dispatch:
-
+    branches:
+      - main
+      - test
 jobs:
   run-manually:
     runs-on: ubuntu-latest
