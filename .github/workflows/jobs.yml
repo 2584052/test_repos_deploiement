@@ -1,0 +1,17 @@
+name: jobs parallèle
+
+on:
+  push:
+    branches:
+      - "*"   # toutes les branches
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Je construis"
+
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Je teste"
+        
