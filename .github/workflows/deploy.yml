@@ -3,7 +3,7 @@ name: Deploy preview environment
 on:
   push:
     branches:
-      - "*"   # toutes les branches
+      - "main"   # toutes les branches
 
 jobs:
   deploy:
